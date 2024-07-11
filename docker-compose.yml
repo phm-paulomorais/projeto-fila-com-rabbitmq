@@ -1,18 +1,33 @@
 services:
-  mysql-8:
-    image: mysql:8.0.18
-    command: --default-authentication-plugin=mysql_native_password
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_ROOT_PASSWORD: ""
-      MYSQL_DATABASE: "orders"
-    ports:
-      - "3306:3306"
-  rabbitmq:
-    image: rabbitmq:3.7.8-management
-    ports:
-      - 5672:5672
-      - 15672:15672
-    environment:
-      - RABBITMQ_DEFAULT_USER=rabbitmq
-      - RABBITMQ_DEFAULT_PASS=rabbitmq
+  #mysql-8:
+  #  image: mysql:8.0.18
+  #  command: --default-authentication-plugin=mysql_native_password
+  #  environment:
+  #    MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  #    MYSQL_ROOT_PASSWORD: ""
+  #    MYSQL_DATABASE: "orders"
+  #  ports:
+  #    - "3306:3306"
+  #rabbitmq:
+  #  image: rabbitmq:3.7.8-management
+  #  ports:
+  #    - 5672:5672
+  #    - 15672:15672
+  #  environment:
+  #    - RABBITMQ_DEFAULT_USER=rabbitmq
+  #    - RABBITMQ_DEFAULT_PASS=rabbitmq
+  app-order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile.dev
+    image: paulomorais/app-order-service:dev
+    container_name: container-order-service
+    entrypoint: java -jar spring-app.jar                
+    volumes:
+     - ./order-service:/usr/src/projeto-order
+    tty: true
+    #depends_on:
+    #  - rabbitmq
+    
+   
+      
